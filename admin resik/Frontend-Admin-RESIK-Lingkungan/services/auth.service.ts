@@ -46,6 +46,7 @@ export interface AdminUser {
   nama: string;
   email: string;
   role: string;
+  telepon?: string;
 }
 
 const REMEMBER_ADMIN_KEY = 'resik_admin_remember_me';

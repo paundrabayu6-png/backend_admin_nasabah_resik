@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -16,7 +16,6 @@ import {
   History,
   FileText,
   LogOut,
-  UserPlus,
 } from "lucide-react";
 
 export default function Sidebar() {
@@ -36,7 +35,6 @@ export default function Sidebar() {
     { name: "Kelola Setoran", href: "/setoran", icon: Package },
     { name: "Aktivitas Nasabah", href: "/aktivitas", icon: History },
     { name: "Laporan", href: "/laporan", icon: FileText },
-    { name: "Daftarkan Admin", href: "/register", icon: UserPlus },
   ];
   const adminName = admin?.nama ?? "Admin";
   const adminRole = admin?.role === "superadmin" ? "Super Admin" : "Admin";

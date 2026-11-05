@@ -881,13 +881,31 @@ class _ProfilNasabahPageState extends State<ProfilNasabahPage> {
         style: IconButton.styleFrom(
           backgroundColor: Colors.white,
           foregroundColor: AppColors.dark,
-          side: const BorderSide(color: AppColors.dark, width: 1.3),
-          fixedSize: const Size(38, 38),
+          side: const BorderSide(color: Color(0xFFDCD6C7), width: 1.2),
+          fixedSize: const Size(40, 40),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
         icon: const Icon(Icons.arrow_back_rounded, size: 20),
       ),
-      const SizedBox(width: 8),
-      Expanded(child: Text('Profil', style: display(size: 22))),
+      const SizedBox(width: 12),
+      Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('Profil Saya', style: display(size: 22)),
+            const SizedBox(height: 2),
+            const Text(
+              'Kelola informasi akun RESIK Anda',
+              style: TextStyle(
+                fontSize: 11,
+                color: AppColors.muted,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ),
       IconButton(
         key: const Key('profile-chatbot-button'),
         tooltip: 'Buka Asisten DaurUang',
@@ -895,7 +913,8 @@ class _ProfilNasabahPageState extends State<ProfilNasabahPage> {
         style: IconButton.styleFrom(
           backgroundColor: AppColors.green,
           foregroundColor: Colors.white,
-          fixedSize: const Size(38, 38),
+          fixedSize: const Size(40, 40),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
         icon: const Icon(Icons.eco_rounded, size: 20),
       ),
@@ -904,42 +923,53 @@ class _ProfilNasabahPageState extends State<ProfilNasabahPage> {
 
   Widget _profileHeaderCard(String initial) {
     final name = _fields['nama']!.text.trim();
+    final phone = _fields['telepon']!.text.trim();
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: _line),
-        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 6)],
+        gradient: const LinearGradient(
+          colors: [Color(0xFF17472A), Color(0xFF26653E)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x2417472A),
+            blurRadius: 10,
+            offset: Offset(0, 4),
+          ),
+        ],
       ),
       child: Row(
         children: [
           InkWell(
             key: const Key('profile-photo-button'),
             onTap: _changeProfilePhoto,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(16),
             child: SizedBox(
-              width: 62,
-              height: 62,
+              width: 66,
+              height: 66,
               child: Stack(
                 clipBehavior: Clip.none,
                 children: [
                   Container(
-                    width: 58,
-                    height: 58,
+                    width: 62,
+                    height: 62,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFE3EDD9),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: AppColors.orange, width: 2),
+                      color: Colors.white.withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: Colors.white.withValues(alpha: 0.3), width: 2),
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(14),
                       child: _profilePhoto == null
-                          ? const Icon(
-                              Icons.person_rounded,
-                              size: 34,
-                              color: AppColors.dark,
+                          ? Center(
+                              child: Text(
+                                initial,
+                                style: display(size: 26, color: Colors.white),
+                              ),
                             )
                           : Image.memory(
                               _profilePhoto!,
@@ -948,7 +978,7 @@ class _ProfilNasabahPageState extends State<ProfilNasabahPage> {
                               errorBuilder: (_, _, _) => const Icon(
                                 Icons.broken_image_outlined,
                                 size: 30,
-                                color: AppColors.dark,
+                                color: Colors.white70,
                               ),
                             ),
                     ),
@@ -957,15 +987,18 @@ class _ProfilNasabahPageState extends State<ProfilNasabahPage> {
                     right: 0,
                     bottom: 0,
                     child: Container(
-                      padding: const EdgeInsets.all(4),
+                      padding: const EdgeInsets.all(4.5),
                       decoration: BoxDecoration(
                         color: AppColors.orange,
-                        borderRadius: BorderRadius.circular(6),
+                        borderRadius: BorderRadius.circular(8),
                         border: Border.all(color: Colors.white, width: 1.5),
+                        boxShadow: const [
+                          BoxShadow(color: Colors.black26, blurRadius: 4),
+                        ],
                       ),
                       child: const Icon(
                         Icons.photo_camera_rounded,
-                        size: 11,
+                        size: 12,
                         color: Colors.white,
                       ),
                     ),
@@ -974,35 +1007,52 @@ class _ProfilNasabahPageState extends State<ProfilNasabahPage> {
               ),
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 14),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  name.isEmpty ? initial : name,
+                  name.isEmpty ? 'Nasabah RESIK' : name,
                   key: const Key('profile-header-name'),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: display(size: 16),
+                  style: display(size: 18, color: Colors.white),
                 ),
-                const SizedBox(height: 4),
+                if (phone.isNotEmpty) ...[
+                  const SizedBox(height: 3),
+                  Text(
+                    phone,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.white.withValues(alpha: 0.8),
+                    ),
+                  ),
+                ],
+                const SizedBox(height: 7),
                 Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 3,
+                    horizontal: 9,
+                    vertical: 3.5,
                   ),
                   decoration: BoxDecoration(
                     color: const Color(0xFFFBEBC8),
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: const Text(
-                    'Member Gold',
-                    style: TextStyle(
-                      fontSize: 9,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xFF8A5A00),
-                    ),
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.workspace_premium_rounded, size: 13, color: Color(0xFF8A5A00)),
+                      SizedBox(width: 4),
+                      Text(
+                        'Member Gold',
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xFF8A5A00),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -1014,24 +1064,24 @@ class _ProfilNasabahPageState extends State<ProfilNasabahPage> {
   }
 
   Widget _sectionLabel(String text) => Padding(
-    padding: const EdgeInsets.only(bottom: 8),
+    padding: const EdgeInsets.only(top: 8, bottom: 8),
     child: Row(
       children: [
         Container(
-          width: 3,
-          height: 13,
+          width: 3.5,
+          height: 14,
           decoration: BoxDecoration(
             color: AppColors.orange,
             borderRadius: BorderRadius.circular(4),
           ),
         ),
-        const SizedBox(width: 7),
+        const SizedBox(width: 8),
         Text(
           text.toUpperCase(),
           style: const TextStyle(
-            fontSize: 10,
+            fontSize: 11,
             fontWeight: FontWeight.w800,
-            letterSpacing: .4,
+            letterSpacing: .6,
             color: AppColors.dark,
           ),
         ),
@@ -1045,18 +1095,19 @@ class _ProfilNasabahPageState extends State<ProfilNasabahPage> {
     bool readOnly = false,
     TextInputType? keyboardType,
   }) => Padding(
-    padding: const EdgeInsets.only(bottom: 9),
+    padding: const EdgeInsets.only(bottom: 11),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 2, bottom: 4),
+          padding: const EdgeInsets.only(left: 2, bottom: 5),
           child: Text(
             label.toUpperCase(),
             style: const TextStyle(
-              fontSize: 8,
-              color: AppColors.muted,
-              fontWeight: FontWeight.bold,
+              fontSize: 10.5,
+              color: Color(0xFF636357),
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.3,
             ),
           ),
         ),
@@ -1064,26 +1115,30 @@ class _ProfilNasabahPageState extends State<ProfilNasabahPage> {
           controller: _fields[key],
           readOnly: readOnly,
           keyboardType: keyboardType,
-          style: const TextStyle(fontSize: 11, color: AppColors.dark),
+          style: const TextStyle(
+            fontSize: 13,
+            color: AppColors.dark,
+            fontWeight: FontWeight.w500,
+          ),
           decoration: InputDecoration(
             isDense: true,
             filled: true,
-            fillColor: readOnly ? const Color(0xFFF5F3ED) : Colors.white,
+            fillColor: readOnly ? const Color(0xFFF3EFE6) : Colors.white,
             contentPadding: const EdgeInsets.symmetric(
-              horizontal: 11,
-              vertical: 11,
+              horizontal: 13,
+              vertical: 12,
             ),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(9),
+              borderRadius: BorderRadius.circular(12),
               borderSide: const BorderSide(color: _line),
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(9),
+              borderRadius: BorderRadius.circular(12),
               borderSide: const BorderSide(color: _line),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(9),
-              borderSide: const BorderSide(color: AppColors.orange),
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: AppColors.orange, width: 1.5),
             ),
           ),
         ),
@@ -1098,13 +1153,13 @@ class _ProfilNasabahPageState extends State<ProfilNasabahPage> {
         ? '${'•' * (number.length - 4)}${number.substring(number.length - 4)}'
         : number;
     return Container(
-      margin: const EdgeInsets.only(bottom: 9),
-      padding: const EdgeInsets.all(13),
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: AppColors.dark,
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: const [
-          BoxShadow(color: Color(0x25000000), offset: Offset(0, 3)),
+          BoxShadow(color: Color(0x22000000), offset: Offset(0, 3), blurRadius: 6),
         ],
       ),
       child: Column(
@@ -1116,7 +1171,7 @@ class _ProfilNasabahPageState extends State<ProfilNasabahPage> {
                 child: Text(
                   isPrimary ? 'METODE UTAMA' : 'METODE PENCAIRAN',
                   style: const TextStyle(
-                    fontSize: 8,
+                    fontSize: 9.5,
                     color: Colors.white70,
                     letterSpacing: .5,
                     fontWeight: FontWeight.bold,
@@ -1127,34 +1182,36 @@ class _ProfilNasabahPageState extends State<ProfilNasabahPage> {
                 isPrimary
                     ? Icons.check_circle_rounded
                     : Icons.account_balance_wallet_outlined,
-                size: 15,
-                color: AppColors.orange,
+                size: 16,
+                color: isPrimary ? const Color(0xFF55C06A) : Colors.white70,
               ),
             ],
           ),
-          const SizedBox(height: 5),
+          const SizedBox(height: 6),
           Text(
             '${method['metode'] ?? ''}',
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 13,
+              fontSize: 14,
               fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: 10),
           const Text(
             'NOMOR AKUN',
-            style: TextStyle(fontSize: 7.5, color: Colors.white70),
+            style: TextStyle(fontSize: 9, color: Colors.white70, letterSpacing: 0.3),
           ),
+          const SizedBox(height: 2),
           Text(
             masked,
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 13,
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
               letterSpacing: 1.2,
             ),
           ),
-          const SizedBox(height: 7),
+          const SizedBox(height: 8),
           Row(
             children: [
               Expanded(
@@ -1163,11 +1220,12 @@ class _ProfilNasabahPageState extends State<ProfilNasabahPage> {
                   children: [
                     const Text(
                       'NAMA PEMILIK',
-                      style: TextStyle(fontSize: 7.5, color: Colors.white70),
+                      style: TextStyle(fontSize: 9, color: Colors.white70, letterSpacing: 0.3),
                     ),
+                    const SizedBox(height: 1),
                     Text(
                       '${method['nama_pemilik'] ?? ''}',
-                      style: const TextStyle(color: Colors.white, fontSize: 10),
+                      style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500),
                     ),
                   ],
                 ),
@@ -1180,14 +1238,15 @@ class _ProfilNasabahPageState extends State<ProfilNasabahPage> {
                     backgroundColor: Colors.white24,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 10,
-                      vertical: 5,
+                      vertical: 6,
                     ),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                     minimumSize: Size.zero,
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                   child: const Text(
                     'JADIKAN UTAMA',
-                    style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold),
                   ),
                 ),
             ],
@@ -1251,7 +1310,8 @@ class _ProfilNasabahPageState extends State<ProfilNasabahPage> {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
-                          fontSize: 8,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w500,
                           color: AppColors.dark,
                         ),
                       ),
@@ -1273,7 +1333,7 @@ class _ProfilNasabahPageState extends State<ProfilNasabahPage> {
                     child: const Text(
                       'Ubah Lokasi',
                       style: TextStyle(
-                        fontSize: 8,
+                        fontSize: 10,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -1309,15 +1369,7 @@ class _ProfilNasabahPageState extends State<ProfilNasabahPage> {
                 onPressed: _loadProfile,
                 child: const Text('Coba lagi'),
               ),
-              TextButton(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const PasswordResetScreen(),
-                  ),
-                ),
-                child: const Text('Lupa Password?'),
-              ),
+
             ],
           ),
         ),
@@ -1348,18 +1400,19 @@ class _ProfilNasabahPageState extends State<ProfilNasabahPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Padding(
-                    padding: EdgeInsets.only(left: 2, bottom: 4),
+                    padding: EdgeInsets.only(left: 2, bottom: 5),
                     child: Text(
                       'TIPE PENGGUNA',
                       style: TextStyle(
-                        fontSize: 8,
-                        color: AppColors.muted,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 10.5,
+                        color: Color(0xFF636357),
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0.3,
                       ),
                     ),
                   ),
                   DropdownButtonFormField<String>(
-                    value: _jenisTempat,
+                    initialValue: _jenisTempat,
                     decoration: InputDecoration(
                       isDense: true,
                       filled: true,
@@ -1400,14 +1453,15 @@ class _ProfilNasabahPageState extends State<ProfilNasabahPage> {
             _field('kelurahan', 'Kelurahan / Desa'),
             _field('kecamatan', 'Kecamatan'),
             _field('kota', 'Kota / Kabupaten'),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 7),
+            const Padding(
+              padding: EdgeInsets.only(top: 4, bottom: 8),
               child: Text(
                 'PINDAI LOKASI',
-                style: const TextStyle(
-                  fontSize: 8,
-                  color: AppColors.muted,
-                  fontWeight: FontWeight.bold,
+                style: TextStyle(
+                  fontSize: 10.5,
+                  color: Color(0xFF636357),
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 0.3,
                 ),
               ),
             ),
@@ -1441,14 +1495,9 @@ class _ProfilNasabahPageState extends State<ProfilNasabahPage> {
               ),
             ),
             const SizedBox(height: 14),
-            FilledButton(
+            FilledButton.icon(
               onPressed: _saving ? null : _saveProfile,
-              style: FilledButton.styleFrom(
-                backgroundColor: AppColors.dark,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 13),
-              ),
-              child: _saving
+              icon: _saving
                   ? const SizedBox(
                       width: 18,
                       height: 18,
@@ -1457,28 +1506,35 @@ class _ProfilNasabahPageState extends State<ProfilNasabahPage> {
                         color: Colors.white,
                       ),
                     )
-                  : const Text('Simpan Perubahan'),
+                  : const Icon(Icons.check_circle_outline_rounded, size: 18),
+              label: const Text(
+                'Simpan Perubahan',
+                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
+              ),
+              style: FilledButton.styleFrom(
+                backgroundColor: AppColors.dark,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+              ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 12),
             OutlinedButton.icon(
               onPressed: _confirmLogout,
-              icon: const Icon(Icons.logout_rounded, color: AppColors.orange),
-              label: const Text('Keluar dari Akun'),
+              icon: const Icon(Icons.logout_rounded, color: AppColors.orange, size: 18),
+              label: const Text(
+                'Keluar dari Akun',
+                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
+              ),
               style: OutlinedButton.styleFrom(
                 foregroundColor: AppColors.orange,
-                side: const BorderSide(color: _line),
+                side: const BorderSide(color: Color(0xFFE8582B), width: 1.2),
                 backgroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 12),
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
               ),
             ),
-            const SizedBox(height: 8),
-            TextButton(
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const PasswordResetScreen()),
-              ),
-              child: const Text('Lupa Password?'),
-            ),
+
           ],
         ),
       ),
@@ -1573,14 +1629,6 @@ class PlaceholderPage extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text('Halaman $title (belum dibuat)'),
-        if (title == 'Profil')
-          TextButton(
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const PasswordResetScreen()),
-            ),
-            child: const Text('Lupa Password?'),
-          ),
       ],
     ),
   );
